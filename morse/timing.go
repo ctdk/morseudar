@@ -24,20 +24,20 @@ import (
 // timing definitions and functions
 
 const (
-	mDih = 1
-	mDot = 3
-	mLetterSep = 4
+	mDit = 1
+	mDash = 3
+	mLetterSep = 3
 	mWordSep = 7
-	mParis time.Duration = 50 // PARIS using 50 dihs for wpm calculations.
+	mParis = 50 // PARIS using 50 dits for wpm calculations.
 )
 
-type DihDuration time.Duration
+type DitDuration time.Duration
 
-func CalcDihDuration(wpm int) DihDuration {
+func CalcDitDuration(wpm int) DitDuration {
 	d := time.Minute / (mParis * time.Duration(wpm))
-	return DihDuration(d) // needed?
+	return DitDuration(d) // needed?
 }
 
-func (d DihDuration) String() string {
+func (d DitDuration) String() string {
 	return fmt.Sprintf("%.3f", float64(d) / float64(time.Second))
 }

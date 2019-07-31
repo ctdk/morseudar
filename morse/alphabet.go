@@ -28,60 +28,63 @@ type MorseWord struct {
 
 type MorseString []*MorseWord
 
-var Alphabet = map[string]MorseChar {
-	"a": ".-",
-	"b": "-...",
-	"c": "-.-.",
-	"d": "-..",
-	"e": ".",
-	"f": "..-.",
-	"g": "--.",
-	"h": "....",
-	"i": "..",
-	"j": ".---",
-	"k": "-.-",
-	"l": ".-..",
-	"m": "--",
-	"n": "-.",
-	"o": "---",
-	"p": ".--.",
-	"q": "--.-",
-	"r": ".-.",
-	"s": "...",
-	"t": "-",
-	"u": "..-",
-	"v": "...-",
-	"w": ".--",
-	"x": "-..-",
-	"y": "-.--",
-	"z": "--..",
-	"1": ".----",
-	"2": "..---",
-	"3": "...--",
-	"4": "....-",
-	"5": ".....",
-	"6": "-....",
-	"7": "--...",
-	"8": "---..",
-	"9": "----.",
-	"0": "-----",
-	".": ".-.-.-",
-	",": "--..--",
-	"?": "..--..",
-	"=": "-...-",
-	"/": "-..-.",
-	":": "---...",
-	"(": "-.--.",
-	")": "-.--.-",
-	"+": ".-.-.",
-	"-": "-....-",
-	"&": ".-...",
-	"\"": ".-..-.",
-	"'": ".----.",
-	"@": ".--.-.",
+var Alphabet = map[rune]MorseChar {
+	'a': ".-",
+	'b': "-...",
+	'c': "-.-.",
+	'd': "-..",
+	'e': ".",
+	'f': "..-.",
+	'g': "--.",
+	'h': "....",
+	'i': "..",
+	'j': ".---",
+	'k': "-.-",
+	'l': ".-..",
+	'm': "--",
+	'n': "-.",
+	'o': "---",
+	'p': ".--.",
+	'q': "--.-",
+	'r': ".-.",
+	's': "...",
+	't': "-",
+	'u': "..-",
+	'v': "...-",
+	'w': ".--",
+	'x': "-..-",
+	'y': "-.--",
+	'z': "--..",
+	'1': ".----",
+	'2': "..---",
+	'3': "...--",
+	'4': "....-",
+	'5': ".....",
+	'6': "-....",
+	'7': "--...",
+	'8': "---..",
+	'9': "----.",
+	'0': "-----",
+	'.': ".-.-.-",
+	',': "--..--",
+	'?': "..--..",
+	'=': "-...-",
+	'/': "-..-.",
+	':': "---...",
+	'(': "-.--.",
+	')': "-.--.-",
+	'+': ".-.-.",
+	'-': "-....-",
+	'&': ".-...",
+	'"': ".-..-.",
+	'\'': ".----.",
+	'@': ".--.-.",
 }
 
+const wordJoin = " / "
+
 func StringToMorse(str string) MorseString {
+	str = strings.ToLower(str)
 	toConv := strings.Split(str, " ")
 	m := make([]*MorseWord, len(toConv))
 
@@ -109,5 +112,26 @@ func StringToMorse(str string) MorseString {
 
 // DotDashString spits out the encoded morse characters as dots and dashes
 func (ms MorseString) DotDashString() string {
+	str := make([]string, len(ms))
 
+	for i, m := range ms {
+		var joiner string
+		if !m.prosign {
+			joiner = " "
+		} else {
+			joiner = ""
+		}
+
+		wordAssemble := make([]string, len(m.word))
+		for j, c := range m.word {
+			wordAssemble[j] = string(c)
+		}
+
+		w := strings.Join(wordAssemble, joiner)
+		str[i] = w
+	}
+
+	dotdash := strings.Join(str, wordJoin)
+
+	return dotdash
 }

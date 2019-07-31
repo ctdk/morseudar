@@ -17,8 +17,8 @@
 package morse
 
 import (
-	"fmt"
-	"time"
+	//"fmt"
+	//"time"
 )
 
 type MorseMode uint8
@@ -29,16 +29,18 @@ const (
 	CodeGroup // generate random 5 groups of 5 alphanumeric strings
 )
 
-const CodeGroup = 5
+const CodeGroupLen = 5
 const CodeGroupPer = 5
 
 type Morse struct {
-	AudioChan chan int32
 	WPM   uint8
+	Frequency uint
 	Lines []MorseString
 	Mode MorseMode
 }
 
-func New(mode MorseMode, wpm uint8, text string, audioChan chan int32) (*Morse, error) {
-	m := new(Morse)
+func New(mode MorseMode, wpm uint8, text string) (*Morse, error) {
+	// m := new(Morse)
+
+	return nil, nil
 }
