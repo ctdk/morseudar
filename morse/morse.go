@@ -19,6 +19,7 @@ package morse
 import (
 	//"fmt"
 	//"time"
+	"strings"
 )
 
 type MorseMode uint8
@@ -33,14 +34,53 @@ const CodeGroupLen = 5
 const CodeGroupPer = 5
 
 type Morse struct {
-	WPM   uint8
+	WPM   int
 	Frequency uint
+	Amplitude uint8
 	Lines []MorseString
 	Mode MorseMode
+	audio *MorseAudio
 }
 
-func New(mode MorseMode, wpm uint8, text string) (*Morse, error) {
-	// m := new(Morse)
+func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string) (*Morse, error) {
+	m := new(Morse)
+	m.Mode = mode
 
-	return nil, nil
+	if wpm == 0 {
+		m.WPM = defaultWPM
+	} else {
+		m.WPM = wpm
+	}
+
+	if freq == 0 {
+		m.Frequency = defaultFrequency
+	} else {
+		m.Frequency = freq
+	}
+
+	if amplitude == 0 {
+		m.Amplitude = defaultAmplitudeLevel
+	} else {
+		m.Amplitude = amplitude
+	}
+
+	if text != "" {
+		textLines := strings.Split(text, "\n")
+		m.Lines = make([]MorseString, 0, len(textLines))
+		for _, l := range textLines {
+			l = strings.TrimSpace(l)
+			if len(l) > 0 {
+				ml := StringToMorse(l)
+				m.Lines = append(m.Lines, ml)
+			}
+		}
+	}
+
+	ma, err := NewMorseAudio(m.Frequency, m.Amplitude, m.WPM)
+	if err != nil {
+		return nil, err
+	}
+	m.audio = ma
+
+	return m, nil
 }

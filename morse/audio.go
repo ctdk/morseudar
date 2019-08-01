@@ -28,7 +28,8 @@ import (
 
 const (
 	defaultFrequency = 700
-	defaultAmplitudeLevel = 5
+	defaultAmplitudeLevel = 215
+	defaultWPM = 10
 	maxAmplitudeLevel = 10
 	minAmplitudeLevel = 0
 	audioQueueLen = 2044 // was 1022, going to try an experiment
@@ -63,7 +64,6 @@ func newSquareWave(output chan<- int32, freq uint, sampleRate float64, amplitude
 	}
 
 	amp := calculateAmplitude(amplitudeLevel)
-	fmt.Printf("amplitude level: %d amplitude: %d\n", amplitudeLevel, amp)
 
 	sq := &squareWave{frequency: freq, sampleRate: sampleRate, output: output, amplitude: amp, period: period}
 
@@ -160,12 +160,9 @@ func (ma *MorseAudio) Destroy() {
 
 func (ma *MorseAudio) SendMessage(ms MorseString) error {
 	for _, mword := range ms {
-		fmt.Printf("word: %s prosign: %v\n", mword.word, mword.prosign)
 		lastChar := len(mword.word) - 1
 		for i, char := range mword.word {
-			fmt.Printf("char: %s\n", char)
 			for _, r := range char {
-				fmt.Printf("c: %c\n", r)
 				var dur time.Duration
 				switch r {
 				case '.':
@@ -181,11 +178,9 @@ func (ma *MorseAudio) SendMessage(ms MorseString) error {
 			}
 
 			if !mword.prosign && i != lastChar {
-				fmt.Printf("char sep\n")
 				time.Sleep(mLetterSep * ma.ditDur)
 			}
 		}
-		fmt.Printf("word sep\n")
 		time.Sleep(mWordSep * ma.ditDur)
 	}
 

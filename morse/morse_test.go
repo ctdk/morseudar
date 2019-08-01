@@ -39,10 +39,10 @@ func TestStringToMorse(t *testing.T) {
 func TestMorseSendMessage(t *testing.T) {
 	var freq uint = 660
 	var amplitudeLevel uint8 = 220
-	wpm := 15
-	msg := "yo dawg, what's up? ~sk~"
+	wpm := 100 // we want this to actually finish someday 
+	msg := "yo dawg ~sk~"
 
-	msg2 := "~cq~ ~cq~ ki7doz de us. ~cq~ ~cq~ ki7doz de us."
+	msg2 := "~cq~ ~cq~ h3llo"
 
 	ma, err := NewMorseAudio(freq, amplitudeLevel, wpm)
 	if err != nil {

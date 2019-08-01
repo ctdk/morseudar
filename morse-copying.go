@@ -17,7 +17,7 @@
 package main
 
 import (
-	"github.com/ctdk/morse-copying/morse"
+	_ "github.com/ctdk/morse-copying/morse"
 )
 
 func main() {
