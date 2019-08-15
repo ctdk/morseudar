@@ -62,3 +62,51 @@ func TestMorseSendMessage(t *testing.T) {
 		t.Errorf("error sending message2: %s", err.Error())
 	}
 }
+
+func TestMorseObject(t *testing.T) {
+	var freq uint = 660
+	var amplitudeLevel uint8 = 220
+	wpm := 100
+	msg := "hi"
+
+	expectedMsg := ".... .."
+
+	m, err := New(Default, wpm, freq, amplitudeLevel, msg)
+	if err != nil {
+		t.Errorf("error creating morse object: %s", err.Error())
+	}
+
+	// Whadda we got?
+	if expectedMsg != m.Lines[0].DotDashString() {
+		t.Errorf("expectedMsg test failed: wanted '%s', got '%s'", expectedMsg, m.Lines[0].DotDashString())
+	}
+	if err = m.Send(0); err != nil {
+		t.Errorf("sending a mesage with the morse object failed: %s", err.Error())
+	}
+}
+
+func TestLoadNewText(t *testing.T) {
+	var freq uint = 660
+	var amplitudeLevel uint8 = 220
+	wpm := 100
+	msg := "hi"
+	newMsg := "yo yo"
+
+	expectedMsg := ".... .."
+	expectedNewMsg := "-.-- --- / -.-- ---"
+
+	m, err := New(Default, wpm, freq, amplitudeLevel, msg)
+	if err != nil {
+		t.Errorf("error creating morse object: %s", err.Error())
+	}
+
+	// Whadda we got?
+	if expectedMsg != m.Lines[0].DotDashString() {
+		t.Errorf("expectedMsg test failed: wanted '%s', got '%s'", expectedMsg, m.Lines[0].DotDashString())
+	}
+
+	err = m.LoadText(newMsg)
+	if expectedNewMsg != m.Lines[0].DotDashString() {
+		t.Errorf("expectedMsg test failed: wanted '%s', got '%s'", expectedMsg, m.Lines[0].DotDashString())
+	}
+}

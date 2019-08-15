@@ -93,3 +93,11 @@ func (m *Morse) LoadText(text string) error {
 	}
 	return nil
 }
+
+func(m *Morse) Send(lineNum int) error {
+	// check lineNum exists
+	if err := m.audio.SendMessage(m.Lines[lineNum]); err != nil {
+		return err
+	}
+	return nil
+}
