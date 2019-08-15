@@ -17,8 +17,7 @@
 package morse
 
 import (
-	//"fmt"
-	//"time"
+	"errors"
 	"strings"
 )
 
@@ -65,14 +64,8 @@ func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string) (*Mor
 	}
 
 	if text != "" {
-		textLines := strings.Split(text, "\n")
-		m.Lines = make([]MorseString, 0, len(textLines))
-		for _, l := range textLines {
-			l = strings.TrimSpace(l)
-			if len(l) > 0 {
-				ml := StringToMorse(l)
-				m.Lines = append(m.Lines, ml)
-			}
+		if tErr := m.LoadText(text); tErr != nil {
+			return nil, tErr
 		}
 	}
 
@@ -83,4 +76,20 @@ func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string) (*Mor
 	m.audio = ma
 
 	return m, nil
+}
+
+func (m *Morse) LoadText(text string) error {
+	if len(text) == 0 {
+		return errors.New("Can not load empty text.")
+	}
+	textLines := strings.Split(text, "\n")
+	m.Lines = make([]MorseString, 0, len(textLines))
+	for _, l := range textLines {
+		l = strings.TrimSpace(l)
+		if len(l) > 0 {
+			ml := StringToMorse(l)
+			m.Lines = append(m.Lines, ml)
+		}
+	}
+	return nil
 }
