@@ -138,3 +138,7 @@ func (m *Morse) SendLineNum(lineNum int) error {
 func (m *Morse) Send(ms MorseString) error {
 	return m.audio.SendMessage(ms)
 }
+
+func (m *Morse) SetSeed(rs int64) {
+	rand.Seed(rs)
+}
