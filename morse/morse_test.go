@@ -18,6 +18,7 @@ package morse
 
 import (
 	"testing"
+	"strings"
 )
 
 const randSeed int64 = 12345
@@ -110,5 +111,43 @@ func TestLoadNewText(t *testing.T) {
 	err = m.LoadText(newMsg)
 	if expectedNewMsg != m.Lines[0].DotDashString() {
 		t.Errorf("expectedMsg test failed: wanted '%s', got '%s'", expectedMsg, m.Lines[0].DotDashString())
+	}
+}
+
+func TestRandomLines(t *testing.T) {
+	var freq uint = 660
+	var amplitudeLevel uint8 = 220
+	wpm := 100
+	rt := []string{"hello", "howdy", "dawg"}
+
+	m, err := New(Default, wpm, freq, amplitudeLevel, strings.Join(rt, "\n"), randSeed)
+	if err != nil {
+		t.Errorf("error creating morse object: %s", err.Error())
+	}
+
+	// call random lines, see what we get back.
+	expectedLineNums := []int{2, 1, 1, 1, 2, 2, 0, 0, 1 ,0}
+	for i, line := range expectedLineNums {
+		ln, err := m.RandomLineNum()
+		if err != nil {
+			t.Errorf("somehow got an error getting a random line number: %s", err.Error())
+		}
+		if line != ln {
+			t.Errorf("RandomLineNum call #%d failed - expected line %d, got %d", i, line, ln)
+		}
+	}
+
+	// reset the seed!
+	m.SetSeed(randSeed)
+
+	expectedStrIdx := []int{2, 1, 1}
+	for i, idx := range expectedStrIdx {
+		ms, err := m.RandomLine()
+		if err != nil {
+			t.Errorf("err getting random line: %s", err.Error())
+		}
+		if rt[idx] != ms[0].text {
+			t.Errorf("Round #%d of getting random lines of MorseStrings returned a word did not match the expected value - expected '%s', got '%s'", i, rt[idx], ms[0].text)
+		}
 	}
 }
