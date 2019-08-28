@@ -23,6 +23,7 @@ import (
 type MorseChar string
 type MorseWord struct {
 	word []MorseChar
+	text string
 	prosign bool
 }
 
@@ -104,6 +105,10 @@ func StringToMorse(str string) MorseString {
 				mw.word = append(mw.word, mc)
 			}
 		}
+
+		// Having this available will be very useful, it turns out.
+		mw.text = s
+
 		m[i] = mw
 	}
 

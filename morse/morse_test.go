@@ -20,6 +20,8 @@ import (
 	"testing"
 )
 
+const randSeed int64 = 12345
+
 func TestStringToMorse(t *testing.T) {
 	s := "foo bar"
 	ms := StringToMorse(s)
@@ -71,7 +73,7 @@ func TestMorseObject(t *testing.T) {
 
 	expectedMsg := ".... .."
 
-	m, err := New(Default, wpm, freq, amplitudeLevel, msg)
+	m, err := New(Default, wpm, freq, amplitudeLevel, msg, randSeed)
 	if err != nil {
 		t.Errorf("error creating morse object: %s", err.Error())
 	}
@@ -80,7 +82,7 @@ func TestMorseObject(t *testing.T) {
 	if expectedMsg != m.Lines[0].DotDashString() {
 		t.Errorf("expectedMsg test failed: wanted '%s', got '%s'", expectedMsg, m.Lines[0].DotDashString())
 	}
-	if err = m.Send(0); err != nil {
+	if err = m.SendLineNum(0); err != nil {
 		t.Errorf("sending a mesage with the morse object failed: %s", err.Error())
 	}
 }
@@ -95,7 +97,7 @@ func TestLoadNewText(t *testing.T) {
 	expectedMsg := ".... .."
 	expectedNewMsg := "-.-- --- / -.-- ---"
 
-	m, err := New(Default, wpm, freq, amplitudeLevel, msg)
+	m, err := New(Default, wpm, freq, amplitudeLevel, msg, randSeed)
 	if err != nil {
 		t.Errorf("error creating morse object: %s", err.Error())
 	}

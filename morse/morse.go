@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 type MorseMode uint8
@@ -44,7 +45,7 @@ type Morse struct {
 	numLines int32
 }
 
-func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string) (*Morse, error) {
+func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string, randSeed int64) (*Morse, error) {
 	m := new(Morse)
 	m.Mode = mode
 
@@ -78,6 +79,11 @@ func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string) (*Mor
 	}
 	m.audio = ma
 
+	if randSeed == 0 {
+		randSeed = time.Now().UnixNano()
+	}
+	rand.Seed(randSeed)
+
 	return m, nil
 }
 
@@ -95,23 +101,31 @@ func (m *Morse) LoadText(text string) error {
 		}
 	}
 
-	m.numLines = len(m.Lines)
+	m.numLines = int32(len(m.Lines))
 	return nil
 }
 
-func (m *Morse) RandomLine() error {
+func (m *Morse) RandomLineNum() (int, error) {
 	if m.numLines == 0 {
-		return errors.New("no text has been loaded!")
+		return 0, errors.New("no text has been loaded!")
 	}
-	i := rand.Int31n(m.Numblines)
-	return m.Send(i)
+
+	return int(rand.Int31n(m.numLines)), nil
 }
 
-func (m *Morse) Send(lineNum int) error {
+func (m *Morse) RandomLine() (MorseString, error) {
+	i, err := m.RandomLineNum()
+	if err != nil {
+		return nil, err
+	}
+	return m.Lines[i], nil
+}
+
+func (m *Morse) SendLineNum(lineNum int) error {
 	switch {
 	case lineNum < 0:
 		return errors.New("line number cannot be negative")
-	case lineNum >= m.numLines:
+	case int32(lineNum) >= m.numLines:
 		return fmt.Errorf("line number '%d' is out of range", lineNum)
 	}
 
@@ -119,4 +133,8 @@ func (m *Morse) Send(lineNum int) error {
 		return err
 	}
 	return nil
+}
+
+func (m *Morse) Send(ms MorseString) error {
+	return m.audio.SendMessage(ms)
 }
