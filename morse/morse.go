@@ -18,6 +18,8 @@ package morse
 
 import (
 	"errors"
+	"fmt"
+	"math/rand"
 	"strings"
 )
 
@@ -39,6 +41,7 @@ type Morse struct {
 	Lines []MorseString
 	Mode MorseMode
 	audio *MorseAudio
+	numLines int32
 }
 
 func New(mode MorseMode, wpm int, freq uint, amplitude uint8, text string) (*Morse, error) {
@@ -91,11 +94,27 @@ func (m *Morse) LoadText(text string) error {
 			m.Lines = append(m.Lines, ml)
 		}
 	}
+
+	m.numLines = len(m.Lines)
 	return nil
 }
 
-func(m *Morse) Send(lineNum int) error {
-	// check lineNum exists
+func (m *Morse) RandomLine() error {
+	if m.numLines == 0 {
+		return errors.New("no text has been loaded!")
+	}
+	i := rand.Int31n(m.Numblines)
+	return m.Send(i)
+}
+
+func (m *Morse) Send(lineNum int) error {
+	switch {
+	case lineNum < 0:
+		return errors.New("line number cannot be negative")
+	case lineNum >= m.numLines:
+		return fmt.Errorf("line number '%d' is out of range", lineNum)
+	}
+
 	if err := m.audio.SendMessage(m.Lines[lineNum]); err != nil {
 		return err
 	}
