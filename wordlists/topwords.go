@@ -1,8 +1,8 @@
-package topwords
+package wordlists
 
 import ()
 
-var topWds = []string{"the",
+var topWords = []string{"the",
 	"of",
 	"and",
 	"to",

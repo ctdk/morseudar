@@ -16,9 +16,9 @@
 
 // Statement to generate the word list
 
-//go:generate sh -c "./gen-topwords.pl < ./google-10000-english-usa-no-swears.txt > wordlist.go && go fmt wordlist.go"
+//go:generate sh -c "./gen-wordlists.pl top < ./google-10000-english-usa-no-swears.txt > topwords.go && go fmt topwords.go"
 
-package topwords
+package wordlists 
 
 import (
 	"github.com/ctdk/morse-copying/morse"
@@ -29,11 +29,11 @@ import (
 // version because that seems best somehow.  
 
 func GetTopWords(num int) []morse.MorseString {
-	allCnt := len(topWds)
+	allCnt := len(topWords)
 	if num > allCnt || num == 0 {
 		num = allCnt
 	}
-	wl := topWds[:num]
+	wl := topWords[:num]
 
 	tw := make([]morse.MorseString, num)
 	for i, w := range wl {

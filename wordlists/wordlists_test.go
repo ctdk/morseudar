@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package topwords
+package wordlists
 
 import (
 	"testing"

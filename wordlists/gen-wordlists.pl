@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-print "package topwords\n";
+print "package wordlists\n";
 print "import (\n)\n";
-print "var topWds = []string{";
+print "var $ARGV[0]Words = []string{";
 
 while (my $l = <STDIN>) {
 	chomp $l;
