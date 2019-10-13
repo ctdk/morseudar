@@ -33,3 +33,29 @@ func TestGetTopXWords(t *testing.T) {
 		}
 	}
 }
+
+func TestQCodes(t *testing.T) {
+	qcodeLen := 98 // we happen to know this
+	allQ := GetQCodes(false)
+	if len(allQ) != qcodeLen {
+		t.Errorf("Somehow the number of Q codes was not %d, got %d.", qcodeLen, len(allQ))
+	}
+	if allQ[0].RawString() != "qni" {
+		t.Errorf("The first q code should have been 'qni', but got '%s'.", allQ[0].RawString())
+	}
+	if allQ[qcodeLen-1].RawString() != "quf?" {
+		t.Errorf("The last q code should have been 'quf?', but got '%s'.", allQ[qcodeLen-1].RawString())
+	}
+
+	noQLen := qcodeLen / 2
+	noQQ := GetQCodes(true)
+	if len(noQQ) != noQLen {
+		t.Errorf("Somehow the number of Q codes excluding questions was not %d, got %d.", noQLen, len(noQQ))
+	}
+	if noQQ[0].RawString() != "qni" {
+		t.Errorf("The first q code excluding questions should have been 'qni', but got '%s'.", noQQ[0].RawString())
+	}
+	if noQQ[noQLen-1].RawString() != "quf" {
+		t.Errorf("The last q code excluding questions should have been 'quf', but got '%s'.", noQQ[noQLen-1].RawString())
+	}
+}

@@ -17,6 +17,7 @@
 // Statement to generate the word list
 
 //go:generate sh -c "./gen-wordlists.pl top < ./google-10000-english-usa-no-swears.txt > topwords.go && go fmt topwords.go"
+//go:generate sh -c "./gen-wordlists.pl qcode < ./q-code.txt > qcodes.go && go fmt qcodes.go"
 
 package wordlists 
 
@@ -41,4 +42,17 @@ func GetTopWords(num int) []morse.MorseString {
 	}
 
 	return tw
+}
+
+func GetQCodes(noQuestions bool) []morse.MorseString {
+	qLen := len(qcodeWords)
+	if noQuestions {
+		qLen /= 2
+	}
+	ql := qcodeWords[:qLen]
+	qc := make([]morse.MorseString, qLen)
+	for i, q := range ql {
+		qc[i] = morse.StringToMorse(q)
+	}
+	return qc
 }
