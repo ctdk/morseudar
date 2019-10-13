@@ -140,3 +140,19 @@ func (ms MorseString) DotDashString() string {
 
 	return dotdash
 }
+
+// RawString returns the raw string that went into making this morse string.
+// Mostly useful for testing.
+func (ms MorseString) RawString() string {
+	// short-circuit the common case where there's only one word in the
+	// string.
+	if len(ms) == 1 {
+		return ms[0].text
+	}
+	strs := make([]string, len(ms))
+	for i, v := range ms {
+		strs[i] = v.text
+	}
+
+	return strings.Join(strs, " ")
+}

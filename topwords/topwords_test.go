@@ -14,31 +14,22 @@
  * limitations under the License.
  */
 
-// Statement to generate the word list
-
-//go:generate sh -c "./gen-topwords.pl < ./google-10000-english-usa-no-swears.txt > wordlist.go && go fmt wordlist.go"
-
 package topwords
 
 import (
-	"github.com/ctdk/morse-copying/morse"
+	"testing"
 )
 
-// These words are ganked from `google-10000-english-usa-no-swears.txt`
-// in https://github.com/first20hours/google-10000-english. Using the no-swear
-// version because that seems best somehow.  
-
-func GetTopWords(num int) []morse.MorseString {
-	allCnt := len(topWds)
-	if num > allCnt || num == 0 {
-		num = allCnt
+func TestGetTopXWords(t *testing.T) {
+	topLen := 3
+	topwords := GetTopWords(topLen)
+	if len(topwords) != topLen {
+		t.Errorf("The top %d words should have %d elements, but got %d back instead.", topLen, topLen, len(topwords))
 	}
-	wl := topWds[:num]
-
-	tw := make([]morse.MorseString, num)
-	for i, w := range wl {
-		tw[i] = morse.StringToMorse(w)
+	expectedWords := []string{"the", "of", "and"}
+	for i := 0; i < len(topwords); i++ {
+		if topwords[i].RawString() != expectedWords[i] {
+			t.Errorf("Top word #%d should have been '%s', but was '%s'.", i, topwords[i].RawString(), expectedWords[i])
+		}
 	}
-
-	return tw
 }
