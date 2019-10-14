@@ -23,13 +23,16 @@ package wordlists
 
 import (
 	"github.com/ctdk/morse-copying/morse"
+	"strings"
 )
+
+type Wordlist []morse.MorseString
 
 // These words are ganked from `google-10000-english-usa-no-swears.txt`
 // in https://github.com/first20hours/google-10000-english. Using the no-swear
 // version because that seems best somehow.  
 
-func GetTopWords(num int) []morse.MorseString {
+func GetTopWords(num int) Wordlist {
 	allCnt := len(topWords)
 	if num > allCnt || num == 0 {
 		num = allCnt
@@ -41,10 +44,10 @@ func GetTopWords(num int) []morse.MorseString {
 		tw[i] = morse.StringToMorse(w)
 	}
 
-	return tw
+	return Wordlist(tw)
 }
 
-func GetQCodes(noQuestions bool) []morse.MorseString {
+func GetQCodes(noQuestions bool) Wordlist {
 	qLen := len(qcodeWords)
 	if noQuestions {
 		qLen /= 2
@@ -54,5 +57,13 @@ func GetQCodes(noQuestions bool) []morse.MorseString {
 	for i, q := range ql {
 		qc[i] = morse.StringToMorse(q)
 	}
-	return qc
+	return Wordlist(qc)
+}
+
+func MakeWordlistFromText(text string) Wordlist {
+
+}
+
+func MakeWordlistFromSlice(lines []string) Wordlist {
+
 }
