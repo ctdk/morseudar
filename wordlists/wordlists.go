@@ -39,12 +39,7 @@ func GetTopWords(num int) Wordlist {
 	}
 	wl := topWords[:num]
 
-	tw := make([]morse.MorseString, num)
-	for i, w := range wl {
-		tw[i] = morse.StringToMorse(w)
-	}
-
-	return Wordlist(tw)
+	return makeWordlistFromSlice(wl)
 }
 
 func GetQCodes(noQuestions bool) Wordlist {
@@ -53,17 +48,39 @@ func GetQCodes(noQuestions bool) Wordlist {
 		qLen /= 2
 	}
 	ql := qcodeWords[:qLen]
-	qc := make([]morse.MorseString, qLen)
-	for i, q := range ql {
-		qc[i] = morse.StringToMorse(q)
+
+	return makeWordlistFromSlice(ql)
+}
+
+// MakewordList accepts either a string of text or a slice of strings and
+// converts it into a Wordlist. NB: This is not what you want if you're looking
+// to import a chunk of text to send line-per-line.
+//
+// TODO: Mke mo' betta
+func MakeWordlist(text interface{}) Wordlist {
+	var words []string
+
+	// Temporarily take the easy way out with invalid input
+	switch t := text.(type) {
+	case string:
+		// Hmm!
+		words = strings.Fields(t)
+	case []string:
+		for _, line := range t {
+			// I suspect it's not significantly cheaper to test if
+			// the line has any spaces in it before splitting it.
+			lSplit := strings.Fields(line)
+			words = append(words, lSplit...)
+		}
 	}
-	return Wordlist(qc)
+
+	return makeWordlistFromSlice(words)
 }
 
-func MakeWordlistFromText(text string) Wordlist {
-
-}
-
-func MakeWordlistFromSlice(lines []string) Wordlist {
-
+func makeWordlistFromSlice(lines []string) Wordlist {
+	wl := make([]morse.MorseString, len(lines))
+	for i, v := range lines {
+		wl[i] = morse.StringToMorse(v)
+	}
+	return Wordlist(wl)
 }
