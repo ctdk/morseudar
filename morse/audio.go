@@ -160,8 +160,8 @@ func (ma *MorseAudio) Destroy() {
 
 func (ma *MorseAudio) SendMessage(ms MorseString) error {
 	for _, mword := range ms {
-		lastChar := len(mword.word) - 1
-		for i, char := range mword.word {
+		lastChar := mword.Len() - 1
+		for i, char := range mword.Chars() {
 			for _, r := range char {
 				var dur time.Duration
 				switch r {

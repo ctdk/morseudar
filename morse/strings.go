@@ -84,6 +84,20 @@ var Alphabet = map[rune]MorseChar {
 
 const wordJoin = " / "
 
+// hopefully this isn't overdoing keeping things private
+
+func (mw *MorseWord) IsProsign() bool {
+	return mw.prosign
+}
+
+func (mw *MorseWord) Chars() []MorseChar {
+	return mw.word
+}
+
+func (mw *MorseWord) Len() int {
+	return len(mw.word)
+}
+
 func StringToMorse(str string) MorseString {
 	str = strings.ToLower(str)
 	toConv := strings.Split(str, " ")
