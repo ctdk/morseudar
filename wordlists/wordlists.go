@@ -18,15 +18,16 @@
 
 //go:generate sh -c "./gen-wordlists.pl top < ./google-10000-english-usa-no-swears.txt > topwords.go && go fmt topwords.go"
 //go:generate sh -c "./gen-wordlists.pl qcode < ./q-code.txt > qcodes.go && go fmt qcodes.go"
+//go:generate sh -c "./gen-wordlists.pl char < ./chars.txt > chars.go && go fmt chars.go"
 
 package wordlists 
 
 import (
-	"github.com/ctdk/morse-copying/morse"
+	"github.com/ctdk/morse-copying/morsestrings"
 	"strings"
 )
 
-type Wordlist []morse.MorseString
+type Wordlist []morsestrings.MorseString
 
 // These words are ganked from `google-10000-english-usa-no-swears.txt`
 // in https://github.com/first20hours/google-10000-english. Using the no-swear
@@ -52,11 +53,16 @@ func GetQCodes(noQuestions bool) Wordlist {
 	return makeWordlistFromSlice(ql)
 }
 
-// MakewordList accepts either a string of text or a slice of strings and
+// do alphabet only, num only, etc. versions later
+func GetChars() Wordlist {
+	return makeWordlistFromSlice(charWords)
+}
+
+// MakeWordlist accepts either a string of text or a slice of strings and
 // converts it into a Wordlist. NB: This is not what you want if you're looking
 // to import a chunk of text to send line-per-line.
 //
-// TODO: Mke mo' betta
+// TODO: Make mo' betta
 func MakeWordlist(text interface{}) Wordlist {
 	var words []string
 
@@ -78,9 +84,9 @@ func MakeWordlist(text interface{}) Wordlist {
 }
 
 func makeWordlistFromSlice(lines []string) Wordlist {
-	wl := make([]morse.MorseString, len(lines))
+	wl := make([]morsestrings.MorseString, len(lines))
 	for i, v := range lines {
-		wl[i] = morse.StringToMorse(v)
+		wl[i] = morsestrings.StringToMorse(v)
 	}
 	return Wordlist(wl)
 }
