@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package morse
+package morsestrings
 
 import (
 	"strings"
@@ -96,6 +96,10 @@ func (mw *MorseWord) Chars() []MorseChar {
 
 func (mw *MorseWord) Len() int {
 	return len(mw.word)
+}
+
+func (mw *MorseWord) String() string {
+	return mw.text
 }
 
 func StringToMorse(str string) MorseString {
