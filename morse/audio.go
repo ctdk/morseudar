@@ -19,6 +19,7 @@ package morse
 import (
 	"fmt"
 	"math"
+	"github.com/ctdk/morse-copying/morsestrings"
 	"github.com/gordonklaus/portaudio"
 	"time"
 )
@@ -158,7 +159,7 @@ func (ma *MorseAudio) Destroy() {
 	ma.stream.Close()
 }
 
-func (ma *MorseAudio) SendMessage(ms MorseString) error {
+func (ma *MorseAudio) SendMessage(ms morsestrings.MorseString) error {
 	for _, mword := range ms {
 		lastChar := mword.Len() - 1
 		for i, char := range mword.Chars() {
@@ -177,7 +178,7 @@ func (ma *MorseAudio) SendMessage(ms MorseString) error {
 				}
 			}
 
-			if !mword.prosign && i != lastChar {
+			if !mword.IsProsign() && i != lastChar {
 				time.Sleep(mLetterSep * ma.ditDur)
 			}
 		}

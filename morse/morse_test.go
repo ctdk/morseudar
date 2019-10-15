@@ -17,6 +17,7 @@
 package morse
 
 import (
+	"github.com/ctdk/morse-copying/morsestrings"
 	"testing"
 	"strings"
 )
@@ -25,7 +26,7 @@ const randSeed int64 = 12345
 
 func TestStringToMorse(t *testing.T) {
 	s := "foo bar"
-	ms := StringToMorse(s)
+	ms := morsestrings.StringToMorse(s)
 	expected := "..-. --- --- / -... .- .-."
 
 	if len(ms) != 2 {
@@ -53,13 +54,13 @@ func TestMorseSendMessage(t *testing.T) {
 	}
 	defer ma.Destroy()
 
-	morseMsg := StringToMorse(msg)
+	morseMsg := morsestrings.StringToMorse(msg)
 	err = ma.SendMessage(morseMsg)
 	if err != nil {
 		t.Errorf("error sending message: %s", err.Error())
 	}
 
-	morseMsg2 := StringToMorse(msg2)
+	morseMsg2 := morsestrings.StringToMorse(msg2)
 	err = ma.SendMessage(morseMsg2)
 	if err != nil {
 		t.Errorf("error sending message2: %s", err.Error())
@@ -146,8 +147,8 @@ func TestRandomLines(t *testing.T) {
 		if err != nil {
 			t.Errorf("err getting random line: %s", err.Error())
 		}
-		if rt[idx] != ms[0].text {
-			t.Errorf("Round #%d of getting random lines of MorseStrings returned a word did not match the expected value - expected '%s', got '%s'", i, rt[idx], ms[0].text)
+		if rt[idx] != ms[0].String() {
+			t.Errorf("Round #%d of getting random lines of MorseStrings returned a word did not match the expected value - expected '%s', got '%s'", i, rt[idx], ms[0].String())
 		}
 	}
 }

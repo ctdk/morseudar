@@ -19,6 +19,7 @@ package morse
 import (
 	"errors"
 	"fmt"
+	"github.com/ctdk/morse-copying/morsestrings"
 	"math/rand"
 	"strings"
 	"time"
@@ -39,7 +40,7 @@ type Morse struct {
 	WPM   int
 	Frequency uint
 	Amplitude uint8
-	Lines []MorseString
+	Lines []morsestrings.MorseString
 	Mode MorseMode
 	audio *MorseAudio
 	numLines int32
@@ -92,11 +93,11 @@ func (m *Morse) LoadText(text string) error {
 		return errors.New("Can not load empty text.")
 	}
 	textLines := strings.Split(text, "\n")
-	m.Lines = make([]MorseString, 0, len(textLines))
+	m.Lines = make([]morsestrings.MorseString, 0, len(textLines))
 	for _, l := range textLines {
 		l = strings.TrimSpace(l)
 		if len(l) > 0 {
-			ml := StringToMorse(l)
+			ml := morsestrings.StringToMorse(l)
 			m.Lines = append(m.Lines, ml)
 		}
 	}
@@ -113,7 +114,7 @@ func (m *Morse) RandomLineNum() (int, error) {
 	return int(rand.Int31n(m.numLines)), nil
 }
 
-func (m *Morse) RandomLine() (MorseString, error) {
+func (m *Morse) RandomLine() (morsestrings.MorseString, error) {
 	i, err := m.RandomLineNum()
 	if err != nil {
 		return nil, err
@@ -135,7 +136,7 @@ func (m *Morse) SendLineNum(lineNum int) error {
 	return nil
 }
 
-func (m *Morse) Send(ms MorseString) error {
+func (m *Morse) Send(ms morsestrings.MorseString) error {
 	return m.audio.SendMessage(ms)
 }
 
