@@ -174,3 +174,10 @@ func (ms MorseString) RawString() string {
 
 	return strings.Join(strs, " ")
 }
+
+// Compare oddly enough compares the given string with the text string
+// underlying the MorseString, and returns true or false depending on how the
+// comparison went.
+func (ms MorseString) Compare(attempted string) bool {
+	return attempted == ms.RawString()
+}
