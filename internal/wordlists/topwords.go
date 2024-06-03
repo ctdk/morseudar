@@ -2,7 +2,8 @@ package wordlists
 
 import ()
 
-var topWords = []string{"the",
+var topWords = []string{
+	"the",
 	"of",
 	"and",
 	"to",

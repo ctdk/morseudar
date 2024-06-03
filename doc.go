@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jeremy Bingham (<jeremy@goiardi.gl>)
+ * Copyright (c) 2024, Jeremy Bingham (<jeremy@goiardi.gl>)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,10 @@
  * limitations under the License.
  */
 
-package morse
+/*
 
-import (
-	"fmt"
-	"time"
-)
+Docs will go here, yo.
 
-// timing definitions and functions
+*/
 
-const (
-	mDit = 1
-	mDash = 3
-	mLetterSep = 3
-	mWordSep = 7
-	mParis = 50 // PARIS using 50 dits for wpm calculations.
-)
-
-type DitDuration time.Duration
-
-func CalcDitDuration(wpm int) DitDuration {
-	d := time.Minute / (mParis * time.Duration(wpm))
-	return DitDuration(d) // needed?
-}
-
-func (d DitDuration) String() string {
-	return fmt.Sprintf("%.3f", float64(d) / float64(time.Second))
-}
+package main

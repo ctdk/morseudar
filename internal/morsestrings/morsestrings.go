@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jeremy Bingham (<jeremy@goiardi.gl>)
+ * Copyright (c) 2019-2024, Jeremy Bingham (<jeremy@goiardi.gl>)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package morsestrings
 
 import (
+	"github.com/ctdk/morseudar/internal/copy-compare"
 	"strings"
 )
 
@@ -178,6 +179,6 @@ func (ms MorseString) RawString() string {
 // Compare oddly enough compares the given string with the text string
 // underlying the MorseString, and returns true or false depending on how the
 // comparison went.
-func (ms MorseString) Compare(attempted string) bool {
-	return attempted == ms.RawString()
+func (ms MorseString) Compare(attempted string) float64 {
+	return compare.CompareStrings(ms.RawString(), attempted)
 }

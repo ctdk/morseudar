@@ -1,1 +1,6 @@
 morse-copying
+.*.sw?
+**/.*.sw?
+morse-copying.exe
+morseudar
+morseudar.exe

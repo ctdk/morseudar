@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jeremy Bingham (<jeremy@goiardi.gl>)
+ * Copyright (c) 2024, Jeremy Bingham (<jeremy@goiardi.gl>)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package main
+package morserrors
 
 import (
-	_ "github.com/ctdk/morse-copying/morse"
+	"errors"
 )
 
-func main() {
-
-}
+var EOF = errors.New("EOF")
+var NoText = errors.New("no text in text block")
+var OutOfRange = errors.New("position out of range")
+var NotApplicable = errors.New("not applicable to this type")

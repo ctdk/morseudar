@@ -2,7 +2,8 @@ package wordlists
 
 import ()
 
-var qcodeWords = []string{"qni",
+var qcodeWords = []string{
+	"qni",
 	"qra",
 	"qrg",
 	"qrh",

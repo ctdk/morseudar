@@ -2,7 +2,8 @@ package wordlists
 
 import ()
 
-var charWords = []string{"a",
+var charWords = []string{
+	"a",
 	"b",
 	"c",
 	"d",
