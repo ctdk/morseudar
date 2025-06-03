@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2024, Jeremy Bingham (<jeremy@goiardi.gl>)
+ * Copyright (c) 2019-2025, Jeremy Bingham (<jeremy@goiardi.gl>)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ func main() {
 
 	uStats, err := stats.Load(opts.SaveFile)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Unable to load save file: ", err)
 	}
 
 	if opts.PrintStats {
@@ -133,9 +133,15 @@ func main() {
 	case morse.MorseChar:
 		m.TestingMaterial = wordlists.GetChars(m.Src())
 	case morse.TextFile:
+		// die if we're in text mode but weren't given a text file to
+		// load.
+		if opts.Text == "" {
+			log.Fatal("Text mode requires the -t/--text argument and a text file. Exiting.")
+		}
+
 		tb := textblock.NewTextblock(m.Src())
 		if err := tb.LoadFile(opts.Text); err != nil {
-			log.Fatal(err)
+			log.Fatal("Unable to load text file: ", err)
 		}
 		m.TestingMaterial = tb
 	}
