@@ -1,6 +1,8 @@
 module github.com/ctdk/morseudar
 
-go 1.18
+go 1.21
+
+toolchain go1.24.3
 
 require github.com/adrg/strutil v0.3.0
 
