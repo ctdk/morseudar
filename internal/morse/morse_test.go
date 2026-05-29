@@ -20,7 +20,6 @@ import (
 	"github.com/ctdk/morseudar/internal/audio"
 	"github.com/ctdk/morseudar/internal/morsestrings"
 	"testing"
-	"strings"
 )
 
 const randSeed = 12345
@@ -71,12 +70,12 @@ func TestMorseObject(t *testing.T) {
 	wpm := 100
 	msg := "hi"
 
-	expectedMsg := ".... .."
-
-	m, err := New(Default, wpm, 0, freq, false, randSeed)
+	m, err := New(TextFile, wpm, 0, freq, false, false, randSeed)
 	if err != nil {
 		t.Errorf("error creating morse object: %s", err.Error())
 	}
-
+	err = m.Send(morsestrings.StringToMorse(msg)); if err != nil {
+		t.Errorf("sending from the morse object didn't work: %v", err)
+	}
 	// TODO: Test the actual object properties or something
 }
