@@ -48,7 +48,7 @@ type Options struct {
 	Frequency int `short:"f" long:"frequency" description:"Frequency in Hz for Morse beep. Defaults to 700."`
 	Mode string `short:"m" long:"mode" description:"Mode to run morseudar under. Options include: text (requires -t/--text), randomline (also requires -t/--text), codegroups, codealnum, codenumbers, topwords, qcodes, chars. Defaults to topwords."`
 	Text string `short:"t" long:"text" description:"Path to text file to load and use for copying testing. Required for 'text' mode."`
-	SaveFile string `short:"s" long:"save" description:"Specify path to save file holding previous test results to help keep track of your progress."` // not ready yet
+	SaveFile string `short:"s" long:"save" description:"Specify path to save file holding previous test results to help keep track of your progress."`
 	TopWordNum int `short:"n" long:"top-word-num" description:"How many words from the top word list to include. Only relevant in topwords mode."`
 	Qquestions bool `short:"q" long:"qcode-questions" description:"Include Q codes followed by a question mark (i.e. QRS and QRS?)."`
 	Seq bool `short:"r" long:"sequential" description:"Send lines sequentially instead of randomly. Not relevant for the code group modes."`
